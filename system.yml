@@ -2,3 +2,26 @@ weaveproxy_socat:
   volumes: [ "/var/run/weave:/var/run/weave" ]
   ports: [ "0.0.0.0:12375:12375" ]
   image: errordeveloper/weaveproxy-socat
+
+weavescope_probe:
+  image: weaveworks/scope:latest
+  net: "host"
+  pid: "host"
+  privileged: true
+  labels:
+    - "works.weave.role=system"
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock:rw"
+  command:
+    - "--probe.docker=true"
+    - "--probe-only"
+    - "127.0.0.1:4040"
+
+weavescope_app:
+  image: weaveworks/scope:latest
+  labels:
+    - "works.weave.role=system"
+  ports: [ "0.0.0.0:4040:4040" ]
+  command:
+    - "--probe.docker=true"
+    - "--app-only"
