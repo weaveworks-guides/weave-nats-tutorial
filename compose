@@ -1,4 +1,12 @@
 #!/bin/bash
 
-docker-compose --file system.yml --project system "$@"
-docker-compose --file nats-cluster.yml --host localhost:12375 --project nats "$@"
+case "$1" in
+  up)
+    docker-compose --file system.yml --project system "$1" -d
+    docker-compose --file nats-cluster.yml --host localhost:12375 --project nats "$1" -d
+    ;;
+  down)
+    docker-compose --file nats-cluster.yml --host localhost:12375 --project nats "$1"
+    docker-compose --file system.yml --project system "$1"
+    ;;
+esac

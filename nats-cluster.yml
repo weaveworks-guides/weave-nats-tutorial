@@ -1,17 +1,17 @@
 nats_a:
   image: apcera/gnatsd
   command: [ "-c", "/etc/cluster.conf", "-p", "4222", "-D", "-V" ]
-  volumes: [ "./cluster.conf:/etc/cluster.conf" ]
+  volumes: [ "./cluster.conf:/etc/cluster.conf:ro" ]
   hostname: "nats-a.weave.local"
 
 nats_b:
   image: apcera/gnatsd
   command: [ "-c", "/etc/cluster.conf", "-p", "4222", "-D", "-V" ]
-  volumes: [ "./cluster.conf:/etc/cluster.conf" ]
+  volumes: [ "./cluster.conf:/etc/cluster.conf:ro" ]
   hostname: "nats-b.weave.local"
 
 nats_c:
   image: apcera/gnatsd
   command: [ "-c", "/etc/cluster.conf", "-p", "4222", "-D", "-V" ]
-  volumes: [ "./cluster.conf:/etc/cluster.conf" ]
+  volumes: [ "./cluster.conf:/etc/cluster.conf:ro" ]
   hostname: "nats-c.weave.local"
