@@ -1,7 +1,9 @@
 weaveproxy_socat:
-  volumes: [ "/var/run/weave:/var/run/weave" ]
-  ports: [ "0.0.0.0:12375:12375" ]
   image: errordeveloper/weaveproxy-socat
+  labels:
+    - "works.weave.role=system"
+  ports: [ "0.0.0.0:12375:12375" ]
+  volumes: [ "/var/run/weave:/var/run/weave" ]
 
 weavescope_probe:
   image: weaveworks/scope:latest
