@@ -1,0 +1,4 @@
+weaveproxy_socat:
+  volumes: [ "/var/run/weave:/var/run/weave" ]
+  ports: [ "0.0.0.0:12375:12375" ]
+  image: errordeveloper/weaveproxy-socat
