@@ -4,8 +4,11 @@ case "$1" in
   up)
     docker-compose --file system.yml --project system "$1" -d
     docker-compose --file nats-cluster.yml --host localhost:12375 --project nats "$1" -d
+    docker-compose --file apps.yml --project apps build
+    docker-compose --file apps.yml --host localhost:12375 --project apps "$1" -d
     ;;
   down)
+    docker-compose --file apps.yml --host localhost:12375 --project apps "$1"
     docker-compose --file nats-cluster.yml --host localhost:12375 --project nats "$1"
     docker-compose --file system.yml --project system "$1"
     ;;
