@@ -12,4 +12,6 @@ case "$1" in
     docker-compose --file nats-cluster.yml --host localhost:12375 --project nats "$1"
     docker-compose --file system.yml --project system "$1"
     ;;
+  scale)
+    docker-compose --file app.yml --host localhost:12375 --project app "$1" "bounce=${2:-5}"
 esac
