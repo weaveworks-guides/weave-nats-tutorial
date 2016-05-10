@@ -8,9 +8,28 @@ case "$1" in
     docker-compose --file app.yml --host localhost:12375 --project app "$1" -d
     ;;
   down)
-    docker-compose --file app.yml --host localhost:12375 --project app "$1"
-    docker-compose --file nats-cluster.yml --host localhost:12375 --project nats "$1"
+    docker-compose --file app.yml --project app "$1"
+    docker-compose --file nats-cluster.yml --project nats "$1"
     docker-compose --file system.yml --project system "$1"
+    ;;
+  ps)
+    echo
+    echo "=== System containers:"
+    echo
+    docker-compose --file system.yml --project system "$1"
+    echo
+    echo "=== NATS cluster:"
+    echo
+    docker-compose --file nats-cluster.yml --project nats "$1"
+    echo
+    echo "=== The Container Chat app:"
+    echo
+    docker-compose --file app.yml --project app "$1"
+    echo
+    echo "=== DNS records in Weave Net:"
+    echo
+    weave status dns
+    echo
     ;;
   scale)
     docker-compose --file app.yml --host localhost:12375 --project app "$1" "bounceme=${2:-5}"

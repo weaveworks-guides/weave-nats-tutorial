@@ -6,6 +6,7 @@ Setup:
 ```
 weave launch
 ./compose up
+./compose ps
 ```
 
 Access Weave Scope:
@@ -41,6 +42,7 @@ Make change to Ruby or JavaScript code, run `./compose up` to update!
 Kill it, if you had enough:
 ```
 ./compose down
+weave stop
 ```
 
 ## For EC2 Container Service
