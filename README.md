@@ -14,6 +14,10 @@ Access Weave Scope:
 open http://localhost:4040
 ```
 
+![Weave Scope - NATS cluster and client apps](https://www.dropbox.com/s/tnbhu7xbpnkdb5w/Screenshot%202016-05-10%2019.17.41.png?dl=1)
+![Weave Scope - NATS cluster and node details](https://www.dropbox.com/s/d2k1ds3hi6yurte/Screenshot%202016-05-10%2019.17.46.png?dl=1)
+![Weave Scope - all containers by Weave Net DNS names](https://www.dropbox.com/s/3lohev31l2o0uin/Screenshot%202016-05-10%2019.18.04.png?dl=1)
+
 Access the Container Chat app:
 ```
 open http://localhost:8080
