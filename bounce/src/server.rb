@@ -18,6 +18,6 @@ NATS.start(opts) do |c|
   end
 
   NATS.subscribe('ping') do |msg|
-    NATS.publish('pong', JSON.dump({ msg: msg, env: ENV.to_h }))
+    NATS.publish('pong', JSON.dump({ msg: JSON.load(msg), env: ENV.to_h }))
   end
 end
