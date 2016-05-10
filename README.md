@@ -1,3 +1,4 @@
+# Container Chat with NATS
 ## Docker for Mac
 
 Setup:

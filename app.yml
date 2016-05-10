@@ -1,4 +1,7 @@
 frontend:
-  build: "./node-app"
+  build: "./frontend"
   ports: [ "0.0.0.0:8080:8080" ]
   hostname: "echo.weave.local"
+
+bounce:
+  build: "./bounce"
