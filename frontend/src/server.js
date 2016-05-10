@@ -5,6 +5,7 @@ var _ = require('lodash');
 var Logger = require('bunyan');
 var restify = require('restify');
 var nats = require('nats');
+var fs = require('fs');
 
 var log = new Logger({
   name: 'nats-echo-fe',
@@ -28,6 +29,21 @@ var server = restify.createServer({ name: 'nats-echo-fe', log: log });
 
 server.use(restify.queryParser());
 
+server.get('/', function indexHTML(req, res, next) {
+  fs.readFile(__dirname + '/index.html', function (err, data) {
+
+    if (err) {
+      next(err);
+      return;
+    }
+
+    res.setHeader('Content-Type', 'text/html');
+    res.writeHead(200);
+    res.end(data);
+    next();
+  });
+});
+
 server.put('/echo/:name', function (req, res, next) {
 
   nc.publish('ping', JSON.stringify(req.params));
@@ -36,13 +52,55 @@ server.put('/echo/:name', function (req, res, next) {
   return next();
 });
 
-var sid = nc.subscribe('pong', function(msg) {
-  log.info(JSON.parse(msg), 'PONG PONG PONG');
-});
+server.get('/events', function (req, res, next) {
 
-server.get('/', function (req, res, next) {
-  res.setHeader('content-type', 'application/x-yaml');
-  res.write("data: " + JSON.stringify({foo: bar}));
+  var stats = {
+    hostname: { },
+    ruby_version: { },
+    echo_name: { },
+  };
+
+  function sendEvent(type, data, _req) {
+    log.info(data, type);
+    _req.write('data: ' + JSON.stringify({ type: type, data: data }) + '\n\n');
+  }
+
+  function aggregateEvents(d) {
+
+    function seen(k, v) {
+      if (stats[k][v] !== undefined) {
+        stats[k][v] += 1;
+      } else {
+        stats[k][v] = 1;
+      }
+    }
+
+    seen('echo_name', d.msg.name);
+    seen('ruby_version', d.env.RUBY_VERSION)
+    seen('hostname', d.env.HOSTNAME)
+
+    return _.clone(stats);
+  }
+
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  });
+
+  var sid = nc.subscribe('pong', function(msg) {
+    var data = JSON.parse(msg);
+    delete data.env.BUNDLER_VERSION;
+    delete data.env.BUNDLE_APP_CONFIG;
+    delete data.env.BUNDLE_APP_CONFIG;
+    delete data.env.BUNDLE_BIN;
+    delete data.env.BUNDLE_SILENCE_ROOT_WARNING;
+    delete data.env.PATH;
+    delete data.env.RUBYGEMS_VERSION;
+    delete data.env.RUBY_DOWNLOAD_SHA256;
+    sendEvent('pongz', data, res);
+    sendEvent('stats', aggregateEvents(data), res);
+  });
 });
 
 server.listen(8080, function () {
