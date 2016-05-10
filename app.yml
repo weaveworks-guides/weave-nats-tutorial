@@ -1,7 +1,9 @@
 frontend:
-  build: "./frontend"
+  #image: errordeveloper/weave-nats-demo-frontend-js
+  build: "./frontend-js"
   ports: [ "0.0.0.0:8080:8080" ]
-  hostname: "echo.weave.local"
+  hostname: "frontend.weave.local"
 
-bounce:
-  build: "./bounce"
+bounceme:
+  #image: errordeveloper/weave-nats-demo-bounceme-rb
+  build: "./bounceme-rb"

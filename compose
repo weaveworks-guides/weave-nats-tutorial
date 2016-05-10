@@ -13,5 +13,5 @@ case "$1" in
     docker-compose --file system.yml --project system "$1"
     ;;
   scale)
-    docker-compose --file app.yml --host localhost:12375 --project app "$1" "bounce=${2:-5}"
+    docker-compose --file app.yml --host localhost:12375 --project app "$1" "bounceme=${2:-5}"
 esac
