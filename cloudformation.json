@@ -780,8 +780,8 @@
           {
             "InstancePort": "80",
             "LoadBalancerPort": "80",
-            "InstanceProtocol": "HTTP",
-            "Protocol": "HTTP"
+            "InstanceProtocol": "TCP",
+            "Protocol": "TCP"
           },
           {
             "InstancePort": "4040",
